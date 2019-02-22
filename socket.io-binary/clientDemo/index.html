@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="format-detection" content="telephone=no"/>
+<meta name="format-detection" content="email=no"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=0" name="viewport">
+<script src="./socket.io/socket.io.js"></script>
+<script>
+
+
+
+function stringToArrayBuffer(string) {
+  const arrayBuffer = new ArrayBuffer(string.length);
+  const arrayBufferView = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < string.length; i++) {
+    arrayBufferView[i] = string.charCodeAt(i);
+  }
+  return arrayBuffer;
+}
+
+function arrayBufferToString(buffer) {
+  return String.fromCharCode.apply(null, new Uint8Array(buffer));
+}
+
+// const helloWorld = stringToArrayBuffer('Hello, World!'); // "ArrayBuffer" (Uint8Array)
+// const encodedString = new Buffer(helloWorld).toString('base64'); // "string"
+// const decodedBuffer = Buffer.from(encodedString, 'base64'); // "Buffer"
+// const decodedArrayBuffer = new Uint8Array(decodedBuffer).buffer; // "ArrayBuffer" (Uint8Array)
+
+// console.log(arrayBufferToString(decodedArrayBuffer)); // prints "Hello, World!"
+
+
+
+var socket = io.connect('ws://127.0.0.1:3000');
+    socket.binaryType = 'arraybuffer';
+
+// var buffer = new ArrayBuffer(15);
+//     var dv = new DataView(buffer);
+// 	dv.setInt16(1, 42);
+	
+
+    socket.emit('event', stringToArrayBuffer( encodeURIComponent('123成都')));
+	socket.on('event', function(data){
+		console.log(decodeURIComponent( arrayBufferToString(data)))
+		//console.log(data)
+	}
+		);
+</script>
+</head>
+<body>
+<div> </div>
+</body>
+</html>
